@@ -73,7 +73,7 @@ class PostController extends Controller
     //check validation
     private function validationcheck($request){
         $validationData = [
-            'postTitle' => 'required|min:3|unique:posts,title',
+            'postTitle' => 'required|min:3|unique:posts,title,'.$request->id,
             'postDes' => 'required',
         ];
 
