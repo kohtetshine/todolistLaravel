@@ -53,7 +53,10 @@
             <div class="container p-3 text-dark">
                 @foreach ($posts as $item )
                 <div class="bg-info p-3 rounded shadow text-end mb-3">
-                    <h3 class="text-start"> {{ $item['title'] }}</h3>
+                    <div class="row">
+                        <h3 class="text-start col-9"> {{ $item['title'] }}</h3>
+                        <h5 class="col-3">{{$item['updated_at']->format("d/M/Y")}}</h5>
+                    </div>
                     <p class="text-start">{{ Str::words($item['description'], 10 ,'. . . ') }}</p>
                     <span>
                         <a href="{{route('post#delete',$item['id'])}}" class="text-decoration-none">

@@ -12,7 +12,7 @@ class PostController extends Controller
 
     public function create()
     {
-        $posts = Post::orderBy('created_at', 'desc')->paginate(3);
+        $posts = Post::orderBy('updated_at', 'desc')->paginate(3);
         return view('create', compact('posts'));
     }
 
@@ -36,8 +36,8 @@ class PostController extends Controller
 
     public function postUpdate($id)
     {
-        $post = Post::where('id', $id)->get()->toArray()[0];
-        // dd($post);
+        $post = Post::where('id', $id)->get();
+        //dd($post)
         return view('update', compact('post'));
     }
 
@@ -71,9 +71,10 @@ class PostController extends Controller
     }
 
     //check validation
-    private function validationcheck($request){
+    private function validationcheck($request)
+    {
         $validationData = [
-            'postTitle' => 'required|min:3|unique:posts,title,'.$request->id,
+            'postTitle' => 'required|min:3|unique:posts,title,' . $request->id,
             'postDes' => 'required',
         ];
 
