@@ -13,6 +13,9 @@ class PostController extends Controller
     public function create()
     {
         $posts = Post::orderBy('updated_at', 'desc')->paginate(3);
+        // $posts=Post::where('id','<','5')->where('address','!=','Yangon')->get()->toArray();
+        // $posts=Post::select('title','price')->get()->toArray();
+        // dd($posts);
         return view('create', compact('posts'));
     }
 

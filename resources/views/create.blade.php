@@ -58,18 +58,26 @@
                         <h5 class="col-3">{{$item['updated_at']->format("d/M/Y")}}</h5>
                     </div>
                     <p class="text-start">{{ Str::words($item['description'], 10 ,'. . . ') }}</p>
-                    <span>
-                        <a href="{{route('post#delete',$item['id'])}}" class="text-decoration-none">
-                            <button class="btn btn-danger">
-                                <i class="fa-solid fa-trash"></i> Delete
-                            </button>
-                        </a>
-                        <a href="{{route('post#update',$item['id'])}}" class="text-decoration-none">
-                            <button class="btn btn-primary">
-                                <i class="fa-solid fa-file-lines"></i> See More
-                            </button>
-                        </a>
-                    </span>
+
+                    <div class="text-start m-0 p-0 d-flex flex-row justify-content-between">
+                        <div class="">
+                            <i class="fa-solid fa-money-bill-1 text-primary"></i> <small>{{ $item['price'] }} MMK</small> |
+                            <i class="fa-solid fa-location-dot text-danger"></i> <small>{{ $item['address'] }}</small> |
+                            <small>{{ $item['rating'] }}</small> <i class="fa-solid fa-star text-warning"></i>
+                        </div>
+                        <div>
+                            <a href="{{route('post#delete',$item['id'])}}" class="text-decoration-none">
+                                <button class="btn btn-danger">
+                                    <i class="fa-solid fa-trash"></i> Delete
+                                </button>
+                            </a>
+                            <a href="{{route('post#update',$item['id'])}}" class="text-decoration-none">
+                                <button class="btn btn-primary">
+                                    <i class="fa-solid fa-file-lines"></i> See More
+                                </button>
+                            </a>
+                        </div>
+                    </div>
                 </div>
                 @endforeach
             </div>
