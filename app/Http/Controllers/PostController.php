@@ -15,7 +15,16 @@ class PostController extends Controller
         $posts = Post::orderBy('updated_at', 'desc')->paginate(3);
         // $posts=Post::where('id','<','5')->where('address','!=','Yangon')->get()->toArray();
         // $posts=Post::select('title','price')->get()->toArray();
-        // dd($posts);
+        // $posts=Post::paginate(3)->through(function($post){
+        //     $post->title=strtoupper($post->title);
+        //     $post->description = strtoupper($post->description);
+        //     return $post;
+        // });
+        // $post=Post::when(request('key'),function($p){
+        //     $searchKey = request('key');
+        //     $p->where('title','like','%'.$searchKey.'%');
+        // })->get()->toArray();
+        // dd($post);
         return view('create', compact('posts'));
     }
 

@@ -47,9 +47,17 @@
             </div>
         </div>
         <div class="col-7">
-            <h3 class="ms-3">
-                Total - {{ $posts->total() }}
-            </h3>
+            <div class="row">
+                <h3 class="ms-3 col-auto">
+                    Total - {{ $posts->total() }}
+                </h3>
+                <div class="col-auto ms-auto">
+                    <input type="text" class="form-control" id="search" placeholder="Enter Search Key">
+                </div>
+                <div class="col-auto">
+                    <button type="submit" class="btn btn-primary mb-3">Search</button>
+                </div>
+            </div>
             <div class="container p-3 text-dark">
                 @foreach ($posts as $item )
                 <div class="bg-info p-3 rounded shadow text-end mb-3">
