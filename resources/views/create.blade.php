@@ -22,7 +22,7 @@
                     </ul>
                 </div>
                 @endif
-                <form action="{{route('post#create')}}" method="post" class="form">
+                <form action="{{route('post#create')}}" method="post" class="form" enctype="multipart/form-data">
                     @csrf
                     <div class="mb-3">
                         <label for="title" class="form-label">Title</label>
@@ -42,6 +42,46 @@
                         </small>
                         @enderror
                     </div>
+                    <div class="mb-3">
+                        <label for="photo" class="form-label">Image</label>
+                        <input type="file" id="photo" class="form-control @error('image') is-invalid @enderror" name="image">
+                        @error('image')
+                        <small class="text-danger">
+                            {{ $message }}
+                        </small>
+                        @enderror
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="fee" class="form-label">Fee</label>
+                        <input type="number" class="form-control @error('fee') is-invalid @enderror" id="fee" name="fee" value="{{old('fee')}}">
+                        @error('fee')
+                        <small class="text-danger">
+                            {{ $message }}
+                        </small>
+                        @enderror
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="address" class="form-label">Address</label>
+                        <input type="text" class="form-control @error('address') is-invalid @enderror" id="address" name="address" value="{{old('address')}}">
+                        @error('address')
+                        <small class="text-danger">
+                            {{ $message }}
+                        </small>
+                        @enderror
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="rate" class="form-label">Rating</label>
+                        <input type="number" min="0" max="5" class="form-control @error('rate') is-invalid @enderror" id="rate" name="rate" value="{{old('rate')}}">
+                        @error('rate')
+                        <small class="text-danger">
+                            {{ $message }}
+                        </small>
+                        @enderror
+                    </div>
+
                     <input type="submit" value="Create" class="btn btn-success">
                 </form>
             </div>
@@ -62,37 +102,37 @@
             </div>
             <div class="container p-3 text-dark">
                 @if (count($posts)!=0)
-                    @foreach ($posts as $item )
-                    <div class="bg-info p-3 rounded shadow text-end mb-3">
-                        <div class="row">
-                            <h3 class="text-start col-9"> {{ $item['title'] }}</h3>
-                            <h5 class="col-3">{{$item['updated_at']->format("d/M/Y")}}</h5>
-                        </div>
-                        <p class="text-start">{{ Str::words($item['description'], 10 ,'. . . ') }}</p>
+                @foreach ($posts as $item )
+                <div class="bg-info p-3 rounded shadow text-end mb-3">
+                    <div class="row">
+                        <h3 class="text-start col-9"> {{ $item['title'] }}</h3>
+                        <h5 class="col-3">{{$item['updated_at']->format("d/M/Y")}}</h5>
+                    </div>
+                    <p class="text-start">{{ Str::words($item['description'], 10 ,'. . . ') }}</p>
 
-                        <div class="text-start m-0 p-0 d-flex flex-row justify-content-between">
-                            <div class="">
-                                <i class="fa-solid fa-money-bill-1 text-primary"></i> <small>{{ $item['price'] }} MMK</small> |
-                                <i class="fa-solid fa-location-dot text-danger"></i> <small>{{ $item['address'] }}</small> |
-                                <small>{{ $item['rating'] }}</small> <i class="fa-solid fa-star text-warning"></i>
-                            </div>
-                            <div>
-                                <a href="{{route('post#delete',$item['id'])}}" class="text-decoration-none">
-                                    <button class="btn btn-danger">
-                                        <i class="fa-solid fa-trash"></i> Delete
-                                    </button>
-                                </a>
-                                <a href="{{route('post#update',$item['id'])}}" class="text-decoration-none">
-                                    <button class="btn btn-primary">
-                                        <i class="fa-solid fa-file-lines"></i> See More
-                                    </button>
-                                </a>
-                            </div>
+                    <div class="text-start m-0 p-0 d-flex flex-row justify-content-between">
+                        <div class="">
+                            <i class="fa-solid fa-money-bill-1 text-primary"></i> <small>{{ $item['price'] }} MMK</small> |
+                            <i class="fa-solid fa-location-dot text-danger"></i> <small>{{ $item['address'] }}</small> |
+                            <small>{{ $item['rating'] }}</small> <i class="fa-solid fa-star text-warning"></i>
+                        </div>
+                        <div>
+                            <a href="{{route('post#delete',$item['id'])}}" class="text-decoration-none">
+                                <button class="btn btn-danger">
+                                    <i class="fa-solid fa-trash"></i> Delete
+                                </button>
+                            </a>
+                            <a href="{{route('post#update',$item['id'])}}" class="text-decoration-none">
+                                <button class="btn btn-primary">
+                                    <i class="fa-solid fa-file-lines"></i> See More
+                                </button>
+                            </a>
                         </div>
                     </div>
-                    @endforeach
+                </div>
+                @endforeach
                 @else
-                    <h3 class="text-danger text-center">There is no data</h3>
+                <h3 class="text-danger text-center">There is no data</h3>
                 @endif
             </div>
             {{ $posts->appends(request()->query())->links() }}

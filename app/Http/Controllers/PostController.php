@@ -36,9 +36,15 @@ class PostController extends Controller
     //post create
     public function postCreate(Request $request)
     {
-
         $this->validationcheck($request);
         $data = $this->getdata($request);
+        if($request->hasFile('image')){
+            $filename=uniqid() . $request->file('image')->getClientOriginalName();
+            $request->file('image')->storeAs('myImage',$filename);
+            $data['image']=$filename;
+
+        }
+
         Post::create($data);
         return back()->with(['insert' => 'Create Successfully']);
     }
@@ -82,7 +88,10 @@ class PostController extends Controller
     {
         $data = [
             'title' => $request->postTitle,
-            'description' => $request->postDes
+            'description' => $request->postDes,
+            'price'=>$request->fee,
+            'address'=>$request->address,
+            'rating'=>$request->rate,
         ];
         return $data;
     }
@@ -93,6 +102,10 @@ class PostController extends Controller
         $validationData = [
             'postTitle' => 'required|min:3|unique:posts,title,' . $request->id,
             'postDes' => 'required',
+            'fee'=>'required',
+            'image'=>'mimes:jpg,jpeg,png',
+            'address'=>'required',
+            'rate'=>'required'
         ];
 
         $validationMessage = [
@@ -100,6 +113,9 @@ class PostController extends Controller
             'postDes.required' => 'You Need To Fill Post Description.',
             'postTitle.min' => 'You Need To Fill More Than 3 Characters',
             'postTitle.unique' => 'Post Title Is Already Taken.Change Another Title.',
+            'fee.required' => 'You Need To Fill Fee.',
+            'address.required' => 'You Need To Fill Address.',
+            'rate.required' => 'You Need To Fill rate.',
         ];
 
         Validator::make($request->all(), $validationData, $validationMessage)->validate();
