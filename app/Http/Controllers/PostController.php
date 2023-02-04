@@ -12,7 +12,7 @@ class PostController extends Controller
 
     public function create()
     {
-        $posts = Post::orderBy('updated_at', 'desc')->paginate(3);
+        // $posts = Post::orderBy('updated_at', 'desc')->paginate(3);
         // $posts=Post::where('id','<','5')->where('address','!=','Yangon')->get()->toArray();
         // $posts=Post::select('title','price')->get()->toArray();
         // $posts=Post::paginate(3)->through(function($post){
@@ -25,6 +25,11 @@ class PostController extends Controller
         //     $p->where('title','like','%'.$searchKey.'%');
         // })->get()->toArray();
         // dd($post);
+        $posts = Post::when(request('searchkey'),function($p){
+            $searchKey = request('searchkey');
+            $p->orwhere('title','like','%'.$searchKey.'%')
+                ->orwhere('description', 'like', '%' . $searchKey . '%');
+        })->orderBy('updated_at', 'desc')->paginate(3);
         return view('create', compact('posts'));
     }
 
