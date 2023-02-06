@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class PostController extends Controller
@@ -39,8 +41,8 @@ class PostController extends Controller
         $this->validationcheck($request);
         $data = $this->getdata($request);
         if($request->hasFile('image')){
-            $filename=uniqid() . $request->file('image')->getClientOriginalName();
-            $request->file('image')->storeAs('myImage',$filename);
+            $filename=uniqid(). "HAS" . $request->file('image')->getClientOriginalName();
+            $request->file('image')->storeAs('public',$filename);
             $data['image']=$filename;
 
         }
@@ -78,6 +80,18 @@ class PostController extends Controller
         $this->validationcheck($request);
         $data = $this->getdata($request);
         $id = $request->id;
+        if($request->hasFile('image')){
+            // delete existing photo
+            $oldImageName=Post::where('id',$id)->get()->toArray();
+            if($oldImageName[0]['image']){
+                // dd($oldImageName[0]['image']);
+                Storage::delete('public/'. $oldImageName[0]['image']);
+                // File::delete(public_path('storage/' . $oldImageName[0]['image']));
+            }
+            $filename=uniqid(). "HAS" . $request->file('image')->getClientOriginalName();
+            $request->file('image')->storeAs('public',$filename);
+            $data['image']=$filename;
+        }
         Post::where('id', $id)->update($data);
         return redirect()->route('post#home')->with(['insert' => 'Update Successfully']);
     }
